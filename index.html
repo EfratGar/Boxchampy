@@ -1,0 +1,1118 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BOXCHAMPY</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&family=Rubik:wght@400;500;700;800;900&family=Secular+One&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:FILL@1&display=swap');
+
+    :root{
+      --bg:#050505;
+      --bg-soft:#0e0e0e;
+      --bg-card:#111111;
+      --panel:#f1eeee;
+      --panel-2:#ffffff;
+      --text:#ffffff;
+      --muted:#cfcfcf;
+      --muted-dark:#5c5c5c;
+      --red:#ff1c1c;
+      --red-2:#c10000;
+      --line:rgba(255,255,255,.08);
+      --line-dark:rgba(0,0,0,.08);
+      --shadow:0 20px 60px rgba(0,0,0,.35);
+      --shadow-red:0 12px 40px rgba(255,28,28,.2);
+      --radius:24px;
+      --max:1240px;
+      --title-font:'Secular One','Arial Black',sans-serif;
+      --body-font:'Heebo','Rubik',Arial,sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:var(--body-font);
+      background:var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:32px 32px;
+      opacity:.22;
+      z-index:0;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.6), transparent 82%);
+    }
+
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
+    button,input,textarea,select{font:inherit}
+    section,header,footer{position:relative;z-index:1}
+
+    .container{
+      width:min(var(--max), calc(100% - 32px));
+      margin-inline:auto;
+    }
+
+    .section-title{
+      font-family:var(--title-font);
+      font-size:clamp(2.1rem, 4.2vw, 4rem);
+      line-height:.95;
+      letter-spacing:.02em;
+      margin:0 0 18px;
+    }
+
+    .section-title .accent{color:var(--red)}
+
+    .eyebrow{
+      color:var(--red);
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      margin-bottom:14px;
+      font-size:.84rem;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:54px;
+      padding:0 26px;
+      border-radius:14px;
+      border:1px solid transparent;
+      cursor:pointer;
+      transition:.22s ease;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .btn-primary{
+      background:var(--red);
+      color:#fff;
+      box-shadow:var(--shadow-red);
+    }
+
+    .btn-primary:hover{transform:translateY(-2px); background:#ff3232}
+
+    .hero-main-cta{
+      font-family:'Rubik', var(--body-font);
+      font-weight:900;
+      letter-spacing:.01em;
+    }
+
+    .nav a,
+    .eyebrow,
+    .faq-q,
+    .price-card .btn,
+    .cta-band .btn,
+    #submitLeadBtn,
+    .mobile-sticky-cta .btn{
+      font-family:'Rubik', var(--body-font);
+      font-weight:900;
+      letter-spacing:.01em;
+    }
+    .btn-outline{background:transparent;border-color:rgba(255,255,255,.18);color:#fff}
+    .btn-outline:hover{border-color:var(--red); color:var(--red)}
+
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:40;
+      background:rgba(4,4,4,.86);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+
+    .header-inner{
+      min-height:92px;
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:center;
+      gap:20px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-shrink:0;
+      padding:10px 0;
+    }
+
+    .brand-badge{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:12px 16px;
+      box-shadow:0 10px 30px rgba(0,0,0,.18);
+    }
+
+    .brand img{height:52px; width:auto; filter:drop-shadow(0 10px 20px rgba(255,0,0,.2))}
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:22px;
+      flex-wrap:wrap;
+      justify-self:center;
+    }
+
+    .nav a{color:#fff;opacity:.94;font-weight:700;font-size:.98rem}
+    .nav a:hover{color:var(--red)}
+    .nav .cta{margin-inline-start:10px}
+
+    .menu-toggle{display:none;background:none;border:0;color:#fff;font-size:1.7rem;cursor:pointer}
+
+    .hero{
+      position:relative;
+      min-height:95vh;
+      display:flex;
+      align-items:center;
+      isolation:isolate;
+      overflow:hidden;
+      background:#000;
+    }
+
+    .hero-media{
+      position:absolute;
+      inset:0;
+      overflow:hidden;
+      background:#000;
+    }
+
+    .hero-slide{
+      position:absolute;
+      inset:0;
+      background-size:cover;
+      background-position:center;
+      filter:grayscale(1) contrast(1.08) brightness(.58);
+      transform:scale(1.05);
+      opacity:0;
+      transition:opacity .9s ease;
+    }
+
+    .hero-slide.active{
+      opacity:1;
+    }
+
+    .hero-media::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.92) 0%, rgba(0,0,0,.76) 38%, rgba(0,0,0,.34) 100%),
+        radial-gradient(circle at 18% 38%, rgba(255,0,0,.32), transparent 26%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+      z-index:1;
+      pointer-events:none;
+    }
+
+    .hero-media::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, transparent 62%, rgba(0,0,0,.55) 100%);
+      z-index:1;
+      pointer-events:none;
+    }
+
+    @keyframes heroZoom{
+      from{transform:scale(1.03) translateX(0)}
+      to{transform:scale(1.09) translateX(-14px)}
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:auto 0 -1px 0;
+      height:180px;
+      background:var(--panel);
+      clip-path:polygon(0 62%,100% 32%,100% 100%,0 100%);
+      z-index:-1;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.02fr .98fr;
+      gap:34px;
+      align-items:center;
+      padding:58px 0 190px;
+      position:relative;
+      z-index:2;
+    }
+
+    .hero-copy{max-width:690px}
+    .hero-title{
+      font-family:'Secular One','Arial Black',sans-serif;
+      font-size:clamp(2.9rem, 7.2vw, 6.2rem);
+      line-height:.84;
+      margin:0 0 22px;
+      text-shadow:0 10px 40px rgba(0,0,0,.35);
+    }
+
+    .hero-title .accent{color:var(--red); display:block}
+    .hero-copy p{color:var(--muted);font-size:1.08rem;line-height:1.85;max-width:580px;margin:0 0 26px;text-shadow:0 4px 20px rgba(0,0,0,.25)}
+
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:28px}
+
+    .hero-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      min-height:42px;
+      padding:0 16px;
+      border-radius:999px;
+      margin-bottom:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.12);
+      color:#fff;
+      font-weight:800;
+      letter-spacing:.04em;
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+    }
+
+    .hero-kicker::before{
+      content:"";
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--red);
+      box-shadow:0 0 0 6px rgba(255,28,28,.14);
+    }
+
+    
+
+    .hero-proof{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+      margin:18px 0 0;
+    }
+
+    .rating-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      min-height:50px;
+      padding:0 16px;
+      border-radius:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 10px 24px rgba(0,0,0,.18);
+      color:#fff;
+      font-weight:800;
+      backdrop-filter:blur(8px);
+    }
+
+    .rating-badge .stars-inline{
+      color:#ffd54a;
+      letter-spacing:.14em;
+      font-size:.95rem;
+      text-shadow:0 4px 18px rgba(0,0,0,.28);
+    }
+
+    .rating-badge small{
+      color:var(--muted);
+      font-weight:700;
+      font-size:.84rem;
+    }
+
+    
+
+    .hero-card{
+      justify-self:end;
+      width:min(100%, 380px);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:30px;
+      padding:28px;
+      box-shadow:var(--shadow), 0 12px 40px rgba(255,28,28,.12);
+      backdrop-filter:blur(12px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-card::after{
+      content:"";
+      position:absolute;
+      inset:auto -36px -36px auto;
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,28,28,.18), transparent 68%);
+      pointer-events:none;
+    }
+
+    .hero-card::before{
+      content:"LIVE";
+      position:absolute;
+      top:16px;
+      left:16px;
+      background:var(--red);
+      color:#fff;
+      font-size:.75rem;
+      font-weight:900;
+      padding:8px 10px;
+      border-radius:999px;
+      letter-spacing:.12em;
+    }
+
+    .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+
+    .stat{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:18px 14px;
+      text-align:center;
+    }
+
+    .stat strong{display:block;font-family:var(--title-font);font-size:1.8rem;margin-bottom:6px}
+
+    .feature-strip-wrap{margin-top:-76px;position:relative;z-index:3}
+    .feature-strip{
+      background:#fff;
+      color:#111;
+      box-shadow:var(--shadow);
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      overflow:hidden;
+      border-radius:24px;
+    }
+
+    .feature{padding:34px 24px;text-align:center;border-inline-start:1px solid var(--line-dark)}
+    .feature:first-child{border-inline-start:none}
+    .feature .icon{
+      width:72px;
+      height:72px;
+      margin:0 auto 16px;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      background:var(--red);
+      border-radius:20px;
+      box-shadow:0 10px 24px rgba(255,28,28,.18);
+    }
+
+    .feature .icon.material-symbols-rounded{
+      font-family:'Material Symbols Rounded';
+      font-size:38px;
+      line-height:1;
+      font-weight:normal;
+      font-style:normal;
+      display:grid;
+      place-items:center;
+      letter-spacing:normal;
+      text-transform:none;
+      white-space:nowrap;
+      direction:ltr;
+      -webkit-font-smoothing:antialiased;
+      font-variation-settings:'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 48;
+    }
+    .feature h3{margin:0 0 8px;color:var(--red);font-family:var(--title-font);font-size:1.35rem}
+    .feature p{margin:0;color:#555;line-height:1.7}
+
+    .about,.schedule,.gallery{background:var(--panel);color:#111}
+    .about,.pricing,.schedule,.testimonials,.gallery,.contact,.faq{padding:96px 0}
+
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:46px;align-items:center}
+
+    .about-image{
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      min-height:560px;
+      position:relative;
+      background:url('https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+      filter:grayscale(1) contrast(1.08) brightness(.84);
+    }
+
+    .about-image::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.28));
+    }
+
+    .about-copy p{color:#535353;line-height:1.95;font-size:1.06rem;margin:0 0 18px}
+    .about-points{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:28px 0 30px}
+    .point{
+      background:#fff;
+      border-right:4px solid var(--red);
+      padding:18px;
+      border-radius:18px;
+      box-shadow:0 10px 26px rgba(0,0,0,.08);
+      font-family:'Rubik', var(--body-font);
+      font-weight:900;
+      letter-spacing:.01em;
+    }
+
+    .pricing,.testimonials,.contact,.faq{background:#000}
+
+    .cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .price-card{
+      background:linear-gradient(180deg,#121212,#090909);
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:26px;
+      padding:32px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .price-card::before{
+      content:"";
+      position:absolute;
+      inset:auto -30px -30px auto;
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,0,0,.2), transparent 70%);
+    }
+
+    .price-card.popular{border-color:rgba(255,31,31,.58);transform:translateY(-10px);box-shadow:0 20px 60px rgba(255,28,28,.18)}
+    .badge{position:absolute;top:18px;left:18px;background:var(--red);color:#fff;padding:8px 12px;border-radius:999px;font-size:.78rem;font-weight:900}
+    .price-card h3{font-family:var(--title-font);font-size:2rem;margin:0 0 8px}
+    .price{font-family:var(--title-font);color:var(--red);font-size:3rem;margin:12px 0 8px}
+    .price small{font-size:1rem;color:var(--muted)}
+    .price-card ul{list-style:none;padding:0;margin:20px 0 28px;display:grid;gap:12px;color:var(--muted)}
+
+    .schedule-box{background:#fff;border-radius:28px;overflow:hidden;box-shadow:var(--shadow)}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:18px 20px;text-align:right;border-bottom:1px solid rgba(0,0,0,.08)}
+    thead th{background:#111;color:#fff;font-weight:900}
+    tbody tr:hover{background:#fff5f5}
+
+    .testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .testimonial{border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,#111,#0a0a0a);border-radius:22px;padding:24px}
+    .stars{color:var(--red);letter-spacing:.2em;margin-bottom:14px}
+    .testimonial p{color:var(--muted);line-height:1.9}
+    .testimonial strong{display:block;margin-top:16px}
+
+    .gallery-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:18px;grid-auto-rows:230px}
+    .gallery-item{
+      position:relative;
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      min-height:230px;
+      background-size:cover;
+      background-position:center;
+      filter:grayscale(1) contrast(1.08) brightness(.9);
+      transition:transform .25s ease, filter .25s ease;
+    }
+    .gallery-item:hover{transform:translateY(-4px) scale(1.01); filter:grayscale(1) contrast(1.12) brightness(.72)}
+    .gallery-item::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,.55))}
+    .gallery-item span{position:absolute;right:18px;bottom:16px;z-index:1;color:#fff;font-weight:800}
+    .gallery-item.tall{grid-row:span 2}
+
+    .cta-band{background:linear-gradient(90deg,#0b0b0b,#1a0000);padding:52px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+    .cta-band .container{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+    .contact-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:26px}
+    .contact-card,.form-card{background:linear-gradient(180deg,#111,#0a0a0a);border:1px solid rgba(255,255,255,.08);border-radius:26px;padding:30px;box-shadow:var(--shadow)}
+    .contact-list{display:grid;gap:16px;margin-top:26px}
+    .contact-item{padding:16px 18px;border-radius:16px;background:rgba(255,255,255,.04);color:var(--muted)}
+    .form-grid{display:grid;gap:14px}
+    input,textarea,select{width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;min-height:52px;padding:14px 16px;color:#111;text-align:right;direction:rtl}
+    textarea{min-height:140px;resize:vertical}
+    input[type="tel"], input[type="email"]{text-align:right;direction:rtl}
+
+    .faq-list{display:grid;gap:14px}
+    .faq-item{border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden;background:#0d0d0d}
+    .faq-q{width:100%;border:0;background:none;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:20px 22px;font-weight:800;cursor:pointer;text-align:right}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .28s ease;padding:0 22px;color:var(--muted);line-height:1.9}
+    .faq-item.open .faq-a{max-height:180px;padding:0 22px 20px}
+
+    .site-footer{background:#050505;border-top:1px solid rgba(255,255,255,.06);padding:34px 0}
+    .footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap;color:#bdbdbd}
+    .socials{display:flex;gap:12px}
+    .social{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);color:#fff}
+    .social:hover{border-color:var(--red);color:var(--red)}
+
+    @media (max-width: 980px){
+      .trainer-grid{grid-template-columns:1fr !important;}
+      .hero-grid,.about-grid,.contact-grid,.cards-3,.testimonial-grid{grid-template-columns:1fr}
+      .gallery-grid{grid-template-columns:1fr 1fr}
+      .feature-strip{grid-template-columns:repeat(2,1fr)}
+      .hero-card{justify-self:start}
+      .price-card.popular{transform:none}
+    }
+
+    @media (max-width: 760px){
+      .header-inner{display:flex;}
+      .hero-proof{margin:14px 0 0}
+      .rating-badge{width:100%; justify-content:center; min-height:46px; padding:10px 14px; text-align:center}
+      .mobile-sticky-cta{display:block}
+      body{padding-bottom:86px}
+      .hero-kicker{min-height:38px; padding:0 12px; margin-bottom:14px; font-size:.82rem}
+      .hero-slide{background-position:62% center;}
+      .menu-toggle{display:block}
+      .site-header{background:rgba(4,4,4,.94)}
+      .header-inner{min-height:78px; gap:12px}
+      .nav{
+        position:absolute;
+        top:78px;
+        right:12px;
+        left:12px;
+        background:#090909;
+        border:1px solid rgba(255,255,255,.08);
+        border-radius:18px;
+        padding:16px;
+        box-shadow:var(--shadow);
+        display:none;
+        flex-direction:column;
+        align-items:stretch;
+        gap:10px;
+      }
+      .nav a{width:100%; padding:10px 4px}
+      .nav .cta{margin-inline-start:0; margin-top:6px; width:100%}
+      .nav.open{display:flex}
+      .hero{min-height:auto}
+      .hero::after{height:92px; clip-path:polygon(0 72%,100% 38%,100% 100%,0 100%)}
+      .hero-grid{grid-template-columns:1fr; padding:28px 0 112px; gap:22px}
+      .hero-copy{max-width:none}
+      .hero-title{font-size:clamp(2.2rem, 11vw, 3.6rem); line-height:.9; margin-bottom:16px}
+      .hero-copy p{font-size:1rem; line-height:1.75; margin-bottom:20px}
+      .hero-actions{flex-direction:column; align-items:stretch; gap:10px; margin-bottom:18px}
+      .hero-actions .btn{width:100%}
+      .hero-card{justify-self:stretch; width:100%; padding:22px; border-radius:24px}
+      .hero-card::before{top:12px; left:12px; font-size:.68rem; padding:6px 8px}
+      .hero-stats{grid-template-columns:repeat(3,1fr); gap:8px}
+      .stat{padding:14px 8px; border-radius:14px}
+      .stat strong{font-size:1.35rem}
+      .feature-strip-wrap{margin-top:-18px}
+      .feature-strip{grid-template-columns:1fr; border-radius:18px}
+      .feature{border-inline-start:none; border-top:1px solid rgba(0,0,0,.08); padding:22px 18px}
+      .feature:first-child{border-top:none}
+      .about,.pricing,.schedule,.testimonials,.gallery,.contact,.faq{padding:68px 0}
+      .section-title{font-size:clamp(1.9rem, 10vw, 2.8rem); margin-bottom:14px}
+      .about-grid,.cards-3,.testimonial-grid,.contact-grid,.gallery-grid{grid-template-columns:1fr}
+      .about-grid{gap:24px}
+      .about-image{min-height:320px; border-radius:22px}
+      .about-points{grid-template-columns:1fr; gap:10px; margin:22px 0 24px}
+      .point{padding:15px; border-radius:14px}
+      .price-card{padding:24px; border-radius:20px}
+      .price-card.popular{transform:none}
+      .price{font-size:2.45rem}
+      .schedule-box{border-radius:18px; overflow-x:auto; -webkit-overflow-scrolling:touch}
+      table{min-width:620px}
+      th,td{padding:14px 14px; font-size:.95rem}
+      .testimonial{padding:20px; border-radius:18px}
+      .gallery-grid{gap:12px; grid-auto-rows:190px}
+      .gallery-item,.gallery-item.tall{grid-row:auto; min-height:190px; border-radius:18px}
+      .cta-band{padding:38px 0}
+      .cta-band .container{align-items:flex-start}
+      .contact-card,.form-card{padding:22px; border-radius:20px}
+      .contact-list{gap:10px; margin-top:18px}
+      .contact-item{padding:14px 14px; border-radius:14px}
+      input,textarea,select{min-height:50px; padding:13px 14px; border-radius:12px}
+      textarea{min-height:120px}
+      .faq-q{padding:18px 16px; font-size:1rem}
+      .faq-item.open .faq-a{padding:0 16px 18px}
+      .site-footer{padding:28px 0}
+      .footer-inner{flex-direction:column; align-items:flex-start; gap:14px}
+      .brand img{height:40px}
+      .brand-badge{padding:8px 10px; border-radius:14px}
+    }
+
+    @media (max-width: 420px){
+      .container{width:min(var(--max), calc(100% - 20px))}
+      .header-inner{min-height:72px}
+      .nav{top:72px; right:10px; left:10px}
+      .hero-grid{padding:22px 0 100px}
+      .hero-title{font-size:2rem}
+      .hero-stats{grid-template-columns:1fr}
+      .btn{min-height:50px; padding:0 18px}
+      .section-title{font-size:1.75rem}
+      .eyebrow{font-size:.74rem}
+      .gallery-grid{grid-auto-rows:170px}
+      .gallery-item,.gallery-item.tall{min-height:170px}
+      .social{width:38px; height:38px}
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#hero" class="brand" aria-label="BOXCHAMPY">
+        <div class="brand-badge">
+          <img src="images/logo.svg" alt="BOXCHAMPY logo">
+        </div>
+      </a>
+
+      <button class="menu-toggle" aria-label="פתח תפריט">☰</button>
+
+      <nav class="nav">
+        <a href="#hero">בית</a>
+        <a href="#about">אודות</a>
+        <a href="#pricing">חבילות</a>
+        <a href="#schedule">מערכת</a>
+        <a href="#trainers">מאמנים</a>
+        <a href="#testimonials">המלצות</a>
+        <a href="#gallery">גלריה</a>
+        <a href="#contact">צור קשר</a>
+        <a href="#contact" class="btn btn-primary cta">להצטרפות</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="hero-media" aria-hidden="true">
+      <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1800&q=80'); animation:heroZoom 17s ease-in-out infinite alternate;"></div>
+      <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&w=1800&q=80'); animation:heroZoom 17s ease-in-out infinite alternate;"></div>
+      <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1800&q=80'); animation:heroZoom 17s ease-in-out infinite alternate;"></div>
+    </div>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow">BOUTIQUE BOXING STUDIO</div>
+        <div class="hero-kicker">HIGH INTENSITY • PREMIUM VIBE</div>
+        <h1 class="hero-title">נכנסים לזירה <span class="accent">כמו אלופים</span></h1>
+        <p>
+          BOXCHAMPY הוא סטודיו בוטיק לבוקסינג־פייט ולכושר פונקציונלי עם נראות חדה, קצב גבוה ואנרגיה שלא נותנת לעמוד במקום.
+          קבוצות קטנות, אימונים מדויקים, אווירה קשוחה ותוצאה שמרגישים בגוף.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary hero-main-cta" href="#contact">להצטרפות למנוי</a>
+          <a class="btn btn-outline hero-main-cta" href="#pricing" style="font-family:'Rubik', var(--body-font);font-weight:900;letter-spacing:.01em;">למסלולים ומחירים</a>
+        </div>
+      </div>
+
+      <aside class="hero-card">
+        <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,255,255,.04), transparent 32%); pointer-events:none;"></div>
+        <div class="eyebrow" style="font-family:'Rubik', var(--body-font);font-weight:900;letter-spacing:.01em;">אימון חי. וייב אמיתי.</div>
+        <h2 style="margin:0 0 10px;font-family:var(--title-font);font-size:2.5rem;line-height:.95;">TRAIN HARD <span style="color:var(--red)">STAY SHARP</span></h2>
+        <p style="margin:0;color:var(--muted);line-height:1.85;">
+          אימוני בוטיק שמרגישים יותר כמו זירה ופחות כמו חדר כושר רגיל. מדויק, מהיר, חד ומלא נוכחות.
+        </p>
+        <div class="hero-stats">
+          <div class="stat"><strong>45</strong><span>דקות לאימון</span></div>
+          <div class="stat"><strong>12</strong><span>מתאמנים בקבוצה</span></div>
+          <div class="stat"><strong>6</strong><span>ימים בשבוע</span></div>
+        </div>
+        <div class="hero-proof">
+          <div class="rating-badge">
+            <span class="stars-inline">★★★★★</span>
+            <div>
+              <div>4.9/5 דירוג מתאמנים</div>
+              <small>120+ חוות דעת</small>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="feature-strip-wrap container">
+    <div class="feature-strip">
+      <div class="feature">
+        <span class="icon material-symbols-rounded" aria-hidden="true">groups</span>
+        <h3>Community</h3>
+        <p>קהל צעיר עם מוטיבציה ואנרגיה גבוהה.</p>
+      </div>
+      <div class="feature">
+        <span class="icon material-symbols-rounded" aria-hidden="true">diamond</span>
+        <h3>Style</h3>
+        <p>שחור, לבן ואדום — וייב חד ובולט.</p>
+      </div>
+      <div class="feature">
+        <span class="icon material-symbols-rounded" aria-hidden="true">fitness_center</span>
+        <h3>Power</h3>
+        <p>כוח, סבולת, יציבות ותנועה נכונה.</p>
+      </div>
+      <div class="feature">
+        <span class="icon material-symbols-rounded" aria-hidden="true">sports_mma</span>
+        <h3>Fight</h3>
+        <p>אימוני בוקסינג וקצב גבוה עם הרבה אופי.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="about" id="about">
+    <div class="container about-grid">
+      <div class="about-copy">
+        <div class="eyebrow">אודות BOXCHAMPY</div>
+        <h2 class="section-title">פחות דיבורים, <span class="accent">יותר עבודה</span></h2>
+        <p>
+          BOXCHAMPY נבנה כסטודיו בוטיק לאנשים שאוהבים להתאמן חזק, להיראות טוב ולהרגיש חלק ממקום עם נוכחות.
+          אין כאן אווירת מיינסטרים רכה — יש קצב, משמעת, קהילה ואימונים שנכנסים עמוק.
+        </p>
+        <p>
+          כל אימון נבנה כדי לדחוף קדימה: בוקסינג, קונדישנינג, כוח, קצב וסגנון. זה מקום שמגיעים אליו כדי להזיע,
+          להתחזק ולצאת חדים יותר ממה שנכנסתם.
+        </p>
+        <div class="about-points">
+          <div class="point">קבוצות קטנות ויחס אישי</div>
+          <div class="point">סטודיו בולט עם נראות חדה</div>
+          <div class="point">אימונים עם אגרסיביות מבוקרת</div>
+          <div class="point">קהילה צעירה עם דרייב</div>
+        </div>
+        <a class="btn btn-primary hero-main-cta" href="#contact">אני רוצה להצטרף</a>
+      </div>
+      <div class="about-image" aria-label="מתאמנת באימון סטודיו"></div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="eyebrow">חבילות ומחירים</div>
+      <h2 class="section-title">בוחרים את <span class="accent">הרמה שלך</span></h2>
+      <div class="cards-3">
+        <article class="price-card">
+          <h3>Start</h3>
+          <div class="price">₪329 <small>/ חודש</small></div>
+          <ul>
+            <li>2 אימונים בשבוע</li>
+            <li>גישה להזמנת שיעורים</li>
+            <li>מתאים למתחילים</li>
+            <li>ליווי של הצוות בכניסה</li>
+          </ul>
+          <a class="btn btn-outline" href="#contact">להתחיל</a>
+        </article>
+
+        <article class="price-card popular">
+          <div class="badge">הכי מבוקש</div>
+          <h3>Champion</h3>
+          <div class="price">₪449 <small>/ חודש</small></div>
+          <ul>
+            <li>4 אימונים בשבוע</li>
+            <li>עדיפות בהרשמה לשיעורים</li>
+            <li>מעקב התקדמות חודשי</li>
+            <li>המסלול המושלם לרוב המתאמנים</li>
+          </ul>
+          <a class="btn btn-primary" href="#contact">להצטרף עכשיו</a>
+        </article>
+
+        <article class="price-card">
+          <h3>Unlimited</h3>
+          <div class="price">₪579 <small>/ חודש</small></div>
+          <ul>
+            <li>כניסה חופשית לכל האימונים</li>
+            <li>בוקסינג + כוח + קונדישנינג</li>
+            <li>עדיפות בסדנאות מיוחדות</li>
+            <li>למי שבא עד הסוף</li>
+          </ul>
+          <a class="btn btn-outline" href="#contact">לדבר איתנו</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="schedule" id="schedule">
+    <div class="container">
+      <div class="eyebrow">מערכת שיעורים</div>
+      <h2 class="section-title">השבוע שלך <span class="accent">נראה ככה</span></h2>
+      <div class="schedule-box">
+        <table>
+          <thead>
+            <tr>
+              <th>יום</th>
+              <th>שעה</th>
+              <th>סוג אימון</th>
+              <th>מאמן/ת</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>ראשון</td><td>19:00</td><td>Boxing Burn</td><td>דניאל</td></tr>
+            <tr><td>שני</td><td>18:30</td><td>Power Circuit</td><td>נועה</td></tr>
+            <tr><td>שלישי</td><td>20:00</td><td>Fight Fit</td><td>איתי</td></tr>
+            <tr><td>רביעי</td><td>19:30</td><td>Core & Punch</td><td>נועה</td></tr>
+            <tr><td>חמישי</td><td>18:00</td><td>Boxing Basics</td><td>דניאל</td></tr>
+            <tr><td>שישי</td><td>10:00</td><td>Weekend Knockout</td><td>צוות BOXCHAMPY</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="trainers" id="trainers" style="background:#0a0a0a;padding:96px 0;">
+    <div class="container">
+      <div class="eyebrow">הצוות שלנו</div>
+      <h2 class="section-title">המאמנים שדוחפים <span class="accent">אותך קדימה</span></h2>
+      <div class="trainer-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;">
+        <article class="trainer-card" style="background:linear-gradient(180deg,#111,#0a0a0a);border:1px solid rgba(255,255,255,.08);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);">
+          <div class="trainer-image" style="height:320px;background:url('https://images.unsplash.com/photo-1566753323558-f4e0952af115?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;filter:grayscale(1) contrast(1.08) brightness(.82);"></div>
+          <div style="padding:22px;">
+            <h3 style="margin:0 0 8px;font-family:var(--title-font);font-size:1.8rem;">דניאל</h3>
+            <div style="color:var(--red);font-weight:900;margin-bottom:10px;">BOXING COACH</div>
+            <p style="margin:0;color:var(--muted);line-height:1.85;">טכניקה, קצב ועבודה מדויקת על תנועה. אימונים חדים עם הרבה נוכחות וזירה אמיתית באוויר.</p>
+          </div>
+        </article>
+        <article class="trainer-card" style="background:linear-gradient(180deg,#111,#0a0a0a);border:1px solid rgba(255,255,255,.08);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);">
+          <div class="trainer-image" style="height:320px;background:url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;filter:grayscale(1) contrast(1.08) brightness(.82);"></div>
+          <div style="padding:22px;">
+            <h3 style="margin:0 0 8px;font-family:var(--title-font);font-size:1.8rem;">נועה</h3>
+            <div style="color:var(--red);font-weight:900;margin-bottom:10px;">STRENGTH & CONDITIONING</div>
+            <p style="margin:0;color:var(--muted);line-height:1.85;">כוח, שליטה ועבודה חכמה. משלבת אינטנסיביות גבוהה עם יחס אישי ודיוק בפרטים.</p>
+          </div>
+        </article>
+        <article class="trainer-card" style="background:linear-gradient(180deg,#111,#0a0a0a);border:1px solid rgba(255,255,255,.08);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);">
+          <div class="trainer-image" style="height:320px;background:url('https://images.unsplash.com/photo-1549476464-37392f717541?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;filter:grayscale(1) contrast(1.08) brightness(.82);"></div>
+          <div style="padding:22px;">
+            <h3 style="margin:0 0 8px;font-family:var(--title-font);font-size:1.8rem;">איתי</h3>
+            <div style="color:var(--red);font-weight:900;margin-bottom:10px;">FIGHT FIT</div>
+            <p style="margin:0;color:var(--muted);line-height:1.85;">מביא אנרגיה אגרסיבית, מוזיקה חזקה ודחיפה קדימה. למי שאוהבים לצאת מאימון רועדים ומחייכים.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="eyebrow">מה אומרים עלינו</div>
+      <h2 class="section-title">מי שנכנס, <span class="accent">נשאר</span></h2>
+      <div class="testimonial-grid">
+        <article class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p>חיפשתי מקום עם אנרגיה אמיתית ולא עוד חדר כושר גנרי. מהרגע הראשון היה ברור שזה סטודיו עם נוכחות. קשה, מדויק וממכר.</p>
+          <strong>מאיה, בת 27</strong>
+        </article>
+        <article class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p>העיצוב, התאורה, המוזיקה והקצב של האימון — הכל מרגיש מחושב. זה המקום היחיד שגורם לי לרצות לבוא שוב ושוב.</p>
+          <strong>יובל, בן 24</strong>
+        </article>
+        <article class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p>יש פה וייב קשוח אבל לא מנוכר. אתה עובד קשה, מזיע באמת, ועדיין מרגיש חלק מקהילה צעירה וחזקה.</p>
+          <strong>רוני, בת 29</strong>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery" id="gallery">
+    <div class="container">
+      <div class="eyebrow">גלריה</div>
+      <h2 class="section-title">שחור־לבן עם <span class="accent">מכה של אדום</span></h2>
+      <div class="gallery-grid">
+        <div class="gallery-item tall" style="background-image:url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1200&q=80')"><span>אווירה בזירה</span></div>
+        <div class="gallery-item" style="background-image:url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&w=1200&q=80')"><span>פוקוס</span></div>
+        <div class="gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=80')"><span>שליטה</span></div>
+        <div class="gallery-item" style="background-image:url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=1200&q=80')"><span>כוח</span></div>
+        <div class="gallery-item" style="background-image:url('https://images.unsplash.com/photo-1517963879433-6ad2b056d712?auto=format&fit=crop&w=1200&q=80')"><span>קהילה</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div>
+        <div class="eyebrow">מוכנים להיכנס לזירה?</div>
+        <h2 class="section-title" style="margin:0">האימון הבא שלך <span class="accent">מתחיל כאן</span></h2>
+      </div>
+      <a class="btn btn-primary" href="#contact">לקביעת אימון ניסיון</a>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="container contact-grid">
+      <div class="contact-card">
+        <div class="eyebrow">צור קשר</div>
+        <h2 class="section-title">משאירים פרטים <span class="accent">ונכנסים לעניינים</span></h2>
+        <p style="color:var(--muted);line-height:1.9;margin:0;max-width:500px">
+          רוצה להצטרף למנוי, לקבוע אימון ניסיון או לשאול משהו? משאירים פרטים ונחזור אליך הכי מהר שאפשר.
+        </p>
+        <div class="contact-list">
+          <div class="contact-item">📍 אבן גבירול 120, תל אביב</div>
+          <div class="contact-item">📞 03-5555555</div>
+          <div class="contact-item">✉️ hello@boxchampy.com</div>
+          <div class="contact-item">🕒 א׳–ה׳ 07:00–22:00 | ו׳ 08:00–14:00</div>
+        </div>
+      </div>
+
+      <form class="form-card form-grid" id="leadForm">
+        <input type="text" name="fullName" placeholder="שם מלא" required>
+        <input type="tel" name="phone" placeholder="טלפון" required>
+        <input type="email" name="email" placeholder="אימייל">
+        <select name="interest" required>
+          <option value="">מה מעניין אותך?</option>
+          <option>מנוי חודשי</option>
+          <option>אימון ניסיון</option>
+          <option>בוקסינג</option>
+          <option>מידע כללי</option>
+        </select>
+        <textarea name="message" placeholder="אפשר לכתוב כאן כל דבר שחשוב לך"></textarea>
+        <button class="btn btn-primary" type="submit" id="submitLeadBtn">שלחו לי פרטים</button>
+        <div id="formMessage" style="display:none;color:#fff;background:rgba(255,28,28,.14);border:1px solid rgba(255,28,28,.4);padding:14px 16px;border-radius:14px;"></div>
+        <div style="color:var(--muted);font-size:.92rem;line-height:1.7;">
+          הטופס מוכן לחיבור אמיתי. אפשר לחבר אותו ל־<strong>Formspree</strong>, <strong>Web3Forms</strong> או לוואטסאפ.
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="eyebrow">FAQ</div>
+      <h2 class="section-title">שאלות <span class="accent">נפוצות</span></h2>
+      <div class="faq-list">
+        <div class="faq-item open">
+          <button class="faq-q">האם צריך ניסיון קודם?<span>＋</span></button>
+          <div class="faq-a">לא. יש אצלנו גם מי שמתחילים לגמרי וגם מתאמנים מנוסים, והצוות מתאים את רמת האימון למי שמגיע.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">אפשר להגיע לאימון ניסיון?<span>＋</span></button>
+          <div class="faq-a">כן. ממלאים את הטופס באתר או יוצרים קשר ישירות, ואנחנו מתאמים איתך את השיעור הקרוב שמתאים לך.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">כמה אנשים יש בכל קבוצה?<span>＋</span></button>
+          <div class="faq-a">הסטודיו עובד בקבוצות קטנות יחסית כדי לשמור על יחס אישי, אנרגיה גבוהה ותשומת לב אמיתית במהלך האימון.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">מה צריך להביא לאימון ראשון?<span>＋</span></button>
+          <div class="faq-a">בגדי ספורט, נעלי אימון, בקבוק מים והרבה מוטיבציה. כל השאר כבר נמצא אצלנו.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <a href="https://wa.me/972501234567?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A2%D7%9C%20%D7%9E%D7%A0%D7%95%D7%99%20%D7%91-BOXCHAMPY" class="whatsapp-float" aria-label="שליחת הודעה בוואטסאפ" style="position:fixed;left:18px;bottom:18px;width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,#25d366,#128c7e);color:#fff;font-size:1.6rem;font-weight:900;box-shadow:0 18px 40px rgba(0,0,0,.35);z-index:80;border:2px solid rgba(255,255,255,.18);">✆</a>
+
+  <div class="mobile-sticky-cta" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:95;padding:10px 12px 10px;background:linear-gradient(180deg, rgba(5,5,5,0), rgba(5,5,5,.88) 28%, rgba(5,5,5,.98));backdrop-filter:blur(10px);" aria-label="כפתורי פעולה מהירים במובייל">
+    <div class="inner" style="display:flex;gap:10px;align-items:center;">
+      <a class="btn btn-outline" style="flex:1;min-height:52px;border-radius:14px;" href="https://wa.me/972501234567?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A2%D7%9C%20%D7%9E%D7%A0%D7%95%D7%99%20%D7%91-BOXCHAMPY">וואטסאפ</a>
+      <a class="btn btn-primary" style="flex:1;min-height:52px;border-radius:14px;" href="#contact">להצטרפות</a>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>© 2026 BOXCHAMPY • כל הזכויות שמורות</div>
+      <div class="socials">
+        <a class="social" href="#" aria-label="Instagram">◎</a>
+        <a class="social" href="#" aria-label="TikTok">♪</a>
+        <a class="social" href="#" aria-label="Facebook">f</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('.nav');
+    menuToggle?.addEventListener('click', () => nav.classList.toggle('open'));
+
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        item.classList.toggle('open');
+      });
+    });
+
+    document.querySelectorAll('.nav a').forEach(link => {
+      link.addEventListener('click', () => nav.classList.remove('open'));
+    });
+
+    const heroSlides = Array.from(document.querySelectorAll('.hero-slide'));
+    let heroSlideIndex = 0;
+
+    if (heroSlides.length > 1) {
+      setInterval(() => {
+        heroSlides[heroSlideIndex].classList.remove('active');
+        heroSlideIndex = (heroSlideIndex + 1) % heroSlides.length;
+        heroSlides[heroSlideIndex].classList.add('active');
+      }, 4200);
+    }
+
+    const FORM_CONFIG = {
+      provider: 'whatsapp', // options: 'whatsapp' | 'formspree' | 'web3forms'
+      whatsappNumber: '972501234567',
+      formspreeEndpoint: 'https://formspree.io/f/YOUR_FORM_ID',
+      web3formsAccessKey: 'YOUR_ACCESS_KEY'
+    };
+
+    const form = document.getElementById('leadForm');
+    const formMessage = document.getElementById('formMessage');
+    const submitLeadBtn = document.getElementById('submitLeadBtn');
+
+    function showFormMessage(text, isSuccess = true) {
+      formMessage.style.display = 'block';
+      formMessage.textContent = text;
+      formMessage.style.background = isSuccess ? 'rgba(30,180,90,.16)' : 'rgba(255,28,28,.14)';
+      formMessage.style.borderColor = isSuccess ? 'rgba(30,180,90,.45)' : 'rgba(255,28,28,.4)';
+    }
+
+    function buildWhatsappText(data) {
+      return `היי, אשמח לפרטים על BOXCHAMPY
+
+שם: ${data.fullName || ''}
+טלפון: ${data.phone || ''}
+אימייל: ${data.email || ''}
+נושא: ${data.interest || ''}
+הודעה: ${data.message || ''}`;
+    }
+
+    async function sendWithFormspree(data) {
+      const response = await fetch(FORM_CONFIG.formspreeEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) throw new Error('formspree_failed');
+    }
+
+    async function sendWithWeb3Forms(data) {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: FORM_CONFIG.web3formsAccessKey,
+          subject: 'ליד חדש מהאתר BOXCHAMPY',
+          from_name: 'BOXCHAMPY Website',
+          ...data
+        })
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) throw new Error('web3forms_failed');
+    }
+
+    form?.addEventListener('submit', async function(e){
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      submitLeadBtn.disabled = true;
+      submitLeadBtn.textContent = 'שולח...';
+      formMessage.style.display = 'none';
+
+      try {
+        if (FORM_CONFIG.provider === 'formspree' && !FORM_CONFIG.formspreeEndpoint.includes('YOUR_FORM_ID')) {
+          await sendWithFormspree(data);
+          showFormMessage(`תודה ${data.fullName || ''}! הפרטים נשלחו בהצלחה. נחזור אליך בקרוב.`);
+          form.reset();
+        } else if (FORM_CONFIG.provider === 'web3forms' && FORM_CONFIG.web3formsAccessKey !== 'YOUR_ACCESS_KEY') {
+          await sendWithWeb3Forms(data);
+          showFormMessage(`תודה ${data.fullName || ''}! הפרטים נשלחו בהצלחה. נחזור אליך בקרוב.`);
+          form.reset();
+        } else {
+          const text = encodeURIComponent(buildWhatsappText(data));
+          window.open(`https://wa.me/${FORM_CONFIG.whatsappNumber}?text=${text}`, '_blank');
+          showFormMessage(`הטופס מוכן. כרגע הוא שולח לוואטסאפ. כדי להפוך אותו לטופס שנשלח ישירות, מחליפים את FORM_CONFIG ל־Formspree או Web3Forms.`);
+        }
+      } catch (error) {
+        showFormMessage('משהו השתבש בשליחה. אפשר לנסות שוב או לפנות אלינו בוואטסאפ.', false);
+      } finally {
+        submitLeadBtn.disabled = false;
+        submitLeadBtn.textContent = 'שלחו לי פרטים';
+      }
+    });
+  </script>
+</body>
+</html>
