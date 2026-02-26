@@ -438,9 +438,120 @@
       background:var(--red);
       border-radius:20px;
       box-shadow:0 10px 24px rgba(255,28,28,.18);
+      transition:box-shadow .28s ease, filter .28s ease, transform .25s ease;
+      overflow:hidden;
     }
 
-    .feature .icon.material-symbols-rounded{
+    .feature:hover .icon{
+      box-shadow:0 16px 30px rgba(255,28,28,.24);
+      filter:brightness(1.05);
+      transform:translateY(-2px);
+    }
+
+    .feature .icon-glyph{
+      display:grid;
+      place-items:center;
+      transform-origin:center;
+      will-change:transform;
+    }
+
+    .feature:nth-child(1) .icon-glyph{
+      animation:iconFightGlyph 2.2s ease-in-out infinite;
+    }
+
+    .feature:nth-child(2) .icon-glyph{
+      animation:iconPowerGlyph 2.8s ease-in-out infinite;
+    }
+
+    .feature:nth-child(3) .icon-glyph{
+      animation:iconStyleGlyph 3.1s ease-in-out infinite;
+    }
+
+    .feature:nth-child(4) .icon-glyph{
+      animation:iconCommunityGlyph 3.4s ease-in-out infinite;
+    }
+
+    .feature:nth-child(1):hover .icon-glyph{
+      animation:iconFightGlyphHover .65s ease;
+    }
+
+    .feature:nth-child(2):hover .icon-glyph{
+      animation:iconPowerGlyphHover .8s ease;
+    }
+
+    .feature:nth-child(3):hover .icon-glyph{
+      animation:iconStyleGlyphHover .9s ease;
+    }
+
+    .feature:nth-child(4):hover .icon-glyph{
+      animation:iconCommunityGlyphHover .85s ease;
+    }
+
+    @keyframes iconFightGlyph{
+      0%, 70%, 100%{transform:translateX(0) rotate(0deg) scale(1)}
+      12%{transform:translateX(6px) rotate(-10deg) scale(1.02)}
+      22%{transform:translateX(-2px) rotate(3deg) scale(.98)}
+      32%{transform:translateX(0) rotate(0deg) scale(1)}
+    }
+
+    @keyframes iconFightGlyphHover{
+      0%{transform:translateX(0) rotate(0deg) scale(1)}
+      30%{transform:translateX(10px) rotate(-14deg) scale(1.08)}
+      55%{transform:translateX(-4px) rotate(6deg) scale(.96)}
+      100%{transform:translateX(0) rotate(0deg) scale(1)}
+    }
+
+    @keyframes iconPowerGlyph{
+      0%, 100%{transform:translateY(0) scale(1)}
+      18%{transform:translateY(-8px) scale(1.08)}
+      34%{transform:translateY(2px) scale(.96)}
+      52%{transform:translateY(-5px) scale(1.04)}
+      70%{transform:translateY(0) scale(1)}
+    }
+
+    @keyframes iconPowerGlyphHover{
+      0%{transform:translateY(0) scale(1)}
+      25%{transform:translateY(-12px) scale(1.12)}
+      50%{transform:translateY(4px) scale(.94)}
+      75%{transform:translateY(-7px) scale(1.05)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    @keyframes iconStyleGlyph{
+      0%, 100%{transform:rotate(0deg) scale(1)}
+      20%{transform:rotate(-8deg) scale(1.03)}
+      40%{transform:rotate(8deg) scale(1.07)}
+      60%{transform:rotate(-5deg) scale(1.02)}
+      80%{transform:rotate(0deg) scale(1)}
+    }
+
+    @keyframes iconStyleGlyphHover{
+      0%{transform:rotate(0deg) scale(1)}
+      22%{transform:rotate(-14deg) scale(1.08)}
+      48%{transform:rotate(16deg) scale(1.12)}
+      72%{transform:rotate(-8deg) scale(1.04)}
+      100%{transform:rotate(0deg) scale(1)}
+    }
+
+    @keyframes iconCommunityGlyph{
+      0%, 100%{transform:translateX(0) translateY(0) scale(1)}
+      20%{transform:translateX(-4px) translateY(-2px) scale(1.03)}
+      40%{transform:translateX(4px) translateY(-2px) scale(1.03)}
+      60%{transform:translateX(-3px) translateY(0) scale(1.01)}
+      80%{transform:translateX(3px) translateY(0) scale(1.01)}
+    }
+
+    @keyframes iconCommunityGlyphHover{
+      0%{transform:translateX(0) scale(1)}
+      20%{transform:translateX(-7px) scale(1.05)}
+      40%{transform:translateX(7px) scale(1.05)}
+      60%{transform:translateX(-5px) scale(1.03)}
+      80%{transform:translateX(5px) scale(1.03)}
+      100%{transform:translateX(0) scale(1)}
+    }
+
+    .feature .icon.material-symbols-rounded,
+    .feature .icon-glyph.material-symbols-rounded{
       font-family:'Material Symbols Rounded';
       font-size:38px;
       line-height:1;
@@ -923,26 +1034,25 @@
   <div class="feature-strip-wrap container">
     <div class="feature-strip">
       <div class="feature">
-        <span class="icon material-symbols-rounded" aria-hidden="true">groups</span>
-        <h3>Community</h3>
-        <p>קהל צעיר עם מוטיבציה ואנרגיה גבוהה.</p>
+        <span class="icon" aria-hidden="true"><span class="icon-glyph material-symbols-rounded">sports_mma</span></span>
+        <h3>Fight</h3>
+        <p>אימוני בוקסינג וקצב גבוה עם הרבה אופי.</p>
       </div>
       <div class="feature">
-        <span class="icon material-symbols-rounded" aria-hidden="true">diamond</span>
-        <h3>Style</h3>
-        <p>שחור, לבן ואדום — וייב חד ובולט.</p>
-      </div>
-      <div class="feature">
-        <span class="icon material-symbols-rounded" aria-hidden="true">fitness_center</span>
+        <span class="icon" aria-hidden="true"><span class="icon-glyph material-symbols-rounded">fitness_center</span></span>
         <h3>Power</h3>
         <p>כוח, סבולת, יציבות ותנועה נכונה.</p>
       </div>
       <div class="feature">
-        <span class="icon material-symbols-rounded" aria-hidden="true">sports_mma</span>
-        <h3>Fight</h3>
-        <p>אימוני בוקסינג וקצב גבוה עם הרבה אופי.</p>
+        <span class="icon" aria-hidden="true"><span class="icon-glyph material-symbols-rounded">diamond</span></span>
+        <h3>Style</h3>
+        <p>שחור, לבן ואדום — וייב חד ובולט.</p>
       </div>
-    </div>
+      <div class="feature">
+        <span class="icon" aria-hidden="true"><span class="icon-glyph material-symbols-rounded">groups</span></span>
+        <h3>Community</h3>
+        <p>קהל צעיר עם מוטיבציה ואנרגיה גבוהה.</p>
+      </div>
   </div>
 
   <section class="about" id="about">
@@ -1430,6 +1540,12 @@
     const form = document.getElementById('leadForm');
     const formMessage = document.getElementById('formMessage');
     const submitLeadBtn = document.getElementById('submitLeadBtn');
+
+    document.querySelectorAll('#leadForm div').forEach(el => {
+      if (el.id !== 'formMessage' && /Formspree|Web3Forms|וואטסאפ/.test(el.textContent)) {
+        el.remove();
+      }
+    });
 
     function showFormMessage(text, isSuccess = true) {
       formMessage.style.display = 'block';
