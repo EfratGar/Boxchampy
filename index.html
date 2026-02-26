@@ -1113,11 +1113,11 @@
 
     @media (max-width: 760px){
       .header-inner{
-        display:grid;
-        grid-template-columns:auto 1fr auto;
+        display:flex;
         align-items:center;
-        min-height:78px;
-        gap:12px;
+        justify-content:space-between;
+        min-height:72px;
+        gap:10px;
       }
       .hero-proof{margin:14px 0 0}
       .rating-badge{width:100%; min-height:58px; padding:12px 14px}
@@ -1133,20 +1133,23 @@
       .hero-slide{background-position:62% center;}
       .menu-toggle{
         display:block;
-        grid-column:1;
-        justify-self:start;
         margin:0;
+        flex:0 0 auto;
+        order:2;
       }
       .site-header{background:rgba(4,4,4,.94)}
       .brand{
-        grid-column:3;
-        justify-self:end;
         margin:0;
-        order:initial;
+        padding:6px 0;
+        flex:0 1 auto;
+        min-width:0;
+        order:1;
       }
+      .brand-badge{padding:8px 12px}
+      .brand img{height:34px; max-width:min(44vw, 170px); object-fit:contain}
       .nav{
         position:absolute;
-        top:78px;
+        top:72px;
         right:12px;
         left:12px;
         background:#090909;
@@ -1206,8 +1209,6 @@
       .faq-item.open .faq-a{padding:0 16px 18px}
       .site-footer{padding:28px 0}
       .footer-inner{flex-direction:column; align-items:flex-start; gap:14px}
-      .brand img{height:40px}
-      .brand-badge{padding:8px 10px; border-radius:14px}
     }
 
     @media (max-width: 420px){
@@ -1220,10 +1221,10 @@
       .lightbox-prev{left:10px}
       .lightbox-next{right:10px}
       .container{width:min(var(--max), calc(100% - 20px))}
-      .header-inner{min-height:72px; grid-template-columns:auto 1fr auto;}
-      .menu-toggle{grid-column:1; justify-self:start;}
-      .brand{grid-column:3; justify-self:end;}
-      .nav{top:72px; right:10px; left:10px}
+      .header-inner{min-height:68px; gap:8px}
+      .brand-badge{padding:7px 10px; border-radius:12px}
+      .brand img{height:30px; max-width:42vw}
+      .nav{top:68px; right:10px; left:10px}
       .hero-grid{padding:22px 0 100px}
       .hero-title{font-size:2rem}
       .hero-stats{grid-template-columns:1fr}
