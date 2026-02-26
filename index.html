@@ -39,6 +39,17 @@
       overflow-x:hidden;
     }
 
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:9998;
+      opacity:.028;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:200px;
+    }
+
     body::before{
       content:"";
       position:fixed;
@@ -102,7 +113,8 @@
       box-shadow:var(--shadow-red);
     }
 
-    .btn-primary:hover{transform:translateY(-2px); background:#ff3232}
+    .btn-primary:hover{transform:translateY(-2px) scale(1.01); background:#ff3232}
+    .btn:active{transform:translateY(0) scale(.985)}
 
     .hero-main-cta{
       font-family:'Rubik', var(--body-font);
@@ -128,9 +140,16 @@
       position:sticky;
       top:0;
       z-index:40;
-      background:rgba(4,4,4,.86);
+      background:rgba(4,4,4,.72);
       backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--line);
+      border-bottom:1px solid transparent;
+      transition:background .35s ease, border-color .35s ease, box-shadow .35s ease;
+    }
+
+    .site-header.stuck{
+      background:rgba(4,4,4,.94);
+      border-bottom-color:var(--line);
+      box-shadow:0 10px 30px rgba(0,0,0,.22);
     }
 
     .header-inner{
@@ -267,6 +286,8 @@
     .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:28px}
 
     .hero-kicker{
+      animation:kickerPulse 2.4s ease-in-out infinite;
+
       display:inline-flex;
       align-items:center;
       gap:10px;
@@ -280,6 +301,11 @@
       font-weight:800;
       letter-spacing:.04em;
       box-shadow:0 8px 24px rgba(0,0,0,.18);
+    }
+
+    @keyframes kickerPulse{
+      0%,100%{box-shadow:0 8px 24px rgba(0,0,0,.18)}
+      50%{box-shadow:0 8px 30px rgba(255,28,28,.12)}
     }
 
     .hero-kicker::before{
@@ -356,6 +382,8 @@
     }
 
     .hero-card::before{
+      animation:liveBadgePulse 1.8s ease-in-out infinite;
+
       content:"LIVE";
       position:absolute;
       top:16px;
@@ -367,6 +395,11 @@
       padding:8px 10px;
       border-radius:999px;
       letter-spacing:.12em;
+    }
+
+    @keyframes liveBadgePulse{
+      0%,100%{box-shadow:0 0 0 0 rgba(255,28,28,.24)}
+      50%{box-shadow:0 0 0 8px rgba(255,28,28,0)}
     }
 
     .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
@@ -392,7 +425,8 @@
       border-radius:24px;
     }
 
-    .feature{padding:34px 24px;text-align:center;border-inline-start:1px solid var(--line-dark)}
+    .feature{padding:34px 24px;text-align:center;border-inline-start:1px solid var(--line-dark);transition:transform .25s ease, background .25s ease}
+    .feature:hover{transform:translateY(-4px);background:#fafafa}
     .feature:first-child{border-inline-start:none}
     .feature .icon{
       width:72px;
@@ -463,6 +497,9 @@
 
     .cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
     .price-card{
+      transform-style:preserve-3d;
+      will-change:transform;
+
       background:linear-gradient(180deg,#121212,#090909);
       border:1px solid rgba(255,255,255,.09);
       border-radius:26px;
@@ -473,6 +510,8 @@
     }
 
     .price-card::before{
+      transition:transform .25s ease, opacity .25s ease;
+
       content:"";
       position:absolute;
       inset:auto -30px -30px auto;
@@ -483,6 +522,7 @@
     }
 
     .price-card.popular{border-color:rgba(255,31,31,.58);transform:translateY(-10px);box-shadow:0 20px 60px rgba(255,28,28,.18)}
+    .price-card.tilted::before{transform:translate3d(-8px,-8px,0) scale(1.04);opacity:1}
     .badge{position:absolute;top:18px;left:18px;background:var(--red);color:#fff;padding:8px 12px;border-radius:999px;font-size:.78rem;font-weight:900}
     .price-card h3{font-family:var(--title-font);font-size:2rem;margin:0 0 8px}
     .price{font-family:var(--title-font);color:var(--red);font-size:3rem;margin:12px 0 8px}
@@ -516,6 +556,148 @@
     .gallery-item:hover{transform:translateY(-4px) scale(1.01); filter:grayscale(1) contrast(1.12) brightness(.72)}
     .gallery-item::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,.55))}
     .gallery-item span{position:absolute;right:18px;bottom:16px;z-index:1;color:#fff;font-weight:800}
+
+    .lightbox{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background:rgba(0,0,0,.82);
+      backdrop-filter:blur(10px);
+      z-index:300;
+      opacity:0;
+      visibility:hidden;
+      transition:opacity .25s ease, visibility .25s ease;
+    }
+
+    .lightbox.open{
+      opacity:1;
+      visibility:visible;
+    }
+
+    .lightbox-dialog{
+      position:relative;
+      width:min(100%, 1040px);
+      border-radius:26px;
+      overflow:hidden;
+      background:#111;
+      box-shadow:0 30px 90px rgba(0,0,0,.55);
+      transform:translateY(14px) scale(.985);
+      transition:transform .25s ease;
+    }
+
+    .lightbox.open .lightbox-dialog{
+      transform:translateY(0) scale(1);
+    }
+
+    .lightbox-image{
+      width:100%;
+      aspect-ratio:16/10;
+      object-fit:cover;
+      display:block;
+      background:#0b0b0b;
+      opacity:1;
+      transform:scale(1);
+      transition:opacity .22s ease, transform .28s ease;
+    }
+
+    .lightbox-image.is-loading{
+      opacity:.18;
+      transform:scale(1.018);
+    }
+
+    .lightbox-caption{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:18px 22px;
+      color:#fff;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+    }
+
+    .lightbox-caption strong{
+      font-family:var(--title-font);
+      font-size:1.25rem;
+      letter-spacing:.03em;
+    }
+
+    .lightbox-meta{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      color:var(--muted);
+      font-weight:700;
+      font-size:.92rem;
+    }
+
+    .lightbox-counter{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:62px;
+      min-height:34px;
+      padding:0 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      color:#fff;
+      font-family:'Rubik', var(--body-font);
+      font-weight:900;
+      letter-spacing:.04em;
+    }
+
+    .lightbox-close{
+      position:absolute;
+      top:14px;
+      left:14px;
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.45);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      font-size:1.15rem;
+      transition:transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .lightbox-close:hover{
+      transform:scale(1.06);
+      background:rgba(255,28,28,.22);
+      border-color:rgba(255,28,28,.4);
+    }
+
+    .lightbox-nav{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.42);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      font-size:1.45rem;
+      transition:transform .2s ease, background .2s ease, border-color .2s ease;
+      z-index:2;
+    }
+
+    .lightbox-nav:hover{
+      transform:translateY(-50%) scale(1.06);
+      background:rgba(255,28,28,.22);
+      border-color:rgba(255,28,28,.4);
+    }
+
+    .lightbox-prev{right:16px}
+    .lightbox-next{left:16px}
     .gallery-item.tall{grid-row:span 2}
 
     .cta-band{background:linear-gradient(90deg,#0b0b0b,#1a0000);padding:52px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
@@ -540,7 +722,22 @@
     .footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap;color:#bdbdbd}
     .socials{display:flex;gap:12px}
     .social{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);color:#fff}
-    .social:hover{border-color:var(--red);color:var(--red)}
+    .social:hover{border-color:var(--red);color:var(--red);transform:translateY(-2px)}
+
+    .sr{
+      opacity:0;
+      transform:translateY(28px);
+      transition:opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1);
+    }
+
+    .sr.vis{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .sr-d1{transition-delay:.08s}
+    .sr-d2{transition-delay:.16s}
+    .sr-d3{transition-delay:.24s}
 
     @media (max-width: 980px){
       .trainer-grid{grid-template-columns:1fr !important;}
@@ -629,6 +826,14 @@
     }
 
     @media (max-width: 420px){
+      .lightbox{padding:14px}
+      .lightbox-dialog{border-radius:18px}
+      .lightbox-caption{padding:14px 16px}
+      .lightbox-caption strong{font-size:1.02rem}
+      .lightbox-close{top:10px;left:10px;width:40px;height:40px}
+      .lightbox-nav{width:44px;height:44px;font-size:1.2rem}
+      .lightbox-prev{right:10px}
+      .lightbox-next{left:10px}
       .container{width:min(var(--max), calc(100% - 20px))}
       .header-inner{min-height:72px}
       .nav{top:72px; right:10px; left:10px}
@@ -649,7 +854,7 @@
     <div class="container header-inner">
       <a href="#hero" class="brand" aria-label="BOXCHAMPY">
         <div class="brand-badge">
-          <img src="logo.svg" alt="BOXCHAMPY logo">
+          <img src="images/logo.svg" alt="BOXCHAMPY logo">
         </div>
       </a>
 
@@ -676,7 +881,7 @@
       <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1800&q=80'); animation:heroZoom 17s ease-in-out infinite alternate;"></div>
     </div>
     <div class="container hero-grid">
-      <div class="hero-copy">
+      <div class="hero-copy sr">
         <div class="eyebrow">BOUTIQUE BOXING STUDIO</div>
         <div class="hero-kicker">HIGH INTENSITY • PREMIUM VIBE</div>
         <h1 class="hero-title">נכנסים לזירה <span class="accent">כמו אלופים</span></h1>
@@ -690,7 +895,7 @@
         </div>
       </div>
 
-      <aside class="hero-card">
+      <aside class="hero-card sr sr-d1">
         <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,255,255,.04), transparent 32%); pointer-events:none;"></div>
         <div class="eyebrow" style="font-family:'Rubik', var(--body-font);font-weight:900;letter-spacing:.01em;">אימון חי. וייב אמיתי.</div>
         <h2 style="margin:0 0 10px;font-family:var(--title-font);font-size:2.5rem;line-height:.95;">TRAIN HARD <span style="color:var(--red)">STAY SHARP</span></h2>
@@ -698,9 +903,9 @@
           אימוני בוטיק שמרגישים יותר כמו זירה ופחות כמו חדר כושר רגיל. מדויק, מהיר, חד ומלא נוכחות.
         </p>
         <div class="hero-stats">
-          <div class="stat"><strong>45</strong><span>דקות לאימון</span></div>
-          <div class="stat"><strong>12</strong><span>מתאמנים בקבוצה</span></div>
-          <div class="stat"><strong>6</strong><span>ימים בשבוע</span></div>
+          <div class="stat"><strong class="count-up" data-target="45">45</strong><span>דקות לאימון</span></div>
+          <div class="stat"><strong class="count-up" data-target="12">12</strong><span>מתאמנים בקבוצה</span></div>
+          <div class="stat"><strong class="count-up" data-target="6">6</strong><span>ימים בשבוע</span></div>
         </div>
         <div class="hero-proof">
           <div class="rating-badge">
@@ -742,7 +947,7 @@
 
   <section class="about" id="about">
     <div class="container about-grid">
-      <div class="about-copy">
+      <div class="about-copy sr sr-d1">
         <div class="eyebrow">אודות BOXCHAMPY</div>
         <h2 class="section-title">פחות דיבורים, <span class="accent">יותר עבודה</span></h2>
         <p>
@@ -761,7 +966,7 @@
         </div>
         <a class="btn btn-primary hero-main-cta" href="#contact">אני רוצה להצטרף</a>
       </div>
-      <div class="about-image" aria-label="מתאמנת באימון סטודיו"></div>
+      <div class="about-image sr" aria-label="מתאמנת באימון סטודיו"></div>
     </div>
   </section>
 
@@ -814,7 +1019,7 @@
     <div class="container">
       <div class="eyebrow">מערכת שיעורים</div>
       <h2 class="section-title">השבוע שלך <span class="accent">נראה ככה</span></h2>
-      <div class="schedule-box">
+      <div class="schedule-box sr">
         <table>
           <thead>
             <tr>
@@ -920,7 +1125,7 @@
 
   <section class="contact" id="contact">
     <div class="container contact-grid">
-      <div class="contact-card">
+      <div class="contact-card sr">
         <div class="eyebrow">צור קשר</div>
         <h2 class="section-title">משאירים פרטים <span class="accent">ונכנסים לעניינים</span></h2>
         <p style="color:var(--muted);line-height:1.9;margin:0;max-width:500px">
@@ -934,7 +1139,7 @@
         </div>
       </div>
 
-      <form class="form-card form-grid" id="leadForm">
+      <form class="form-card form-grid sr sr-d1" id="leadForm">
         <input type="text" name="fullName" placeholder="שם מלא" required>
         <input type="tel" name="phone" placeholder="טלפון" required>
         <input type="email" name="email" placeholder="אימייל">
@@ -989,6 +1194,22 @@
     </div>
   </div>
 
+  <div class="lightbox" id="galleryLightbox" aria-hidden="true">
+    <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="תמונה מוגדלת מהגלריה">
+      <button class="lightbox-close" id="lightboxClose" type="button" aria-label="סגירה">✕</button>
+      <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="תמונה קודמת">›</button>
+      <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="תמונה הבאה">‹</button>
+      <img class="lightbox-image" id="lightboxImage" alt="">
+      <div class="lightbox-caption">
+        <strong id="lightboxTitle"></strong>
+        <div class="lightbox-meta">
+          <span class="lightbox-counter" id="lightboxCounter">1 / 5</span>
+          <span style="color:var(--muted)">ESC לסגירה</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer class="site-footer">
     <div class="container footer-inner">
       <div>© 2026 BOXCHAMPY • כל הזכויות שמורות</div>
@@ -1001,6 +1222,11 @@
   </footer>
 
   <script>
+    const siteHeader = document.querySelector('.site-header');
+    window.addEventListener('scroll', () => {
+      siteHeader?.classList.toggle('stuck', window.scrollY > 30);
+    }, { passive:true });
+
     const menuToggle = document.querySelector('.menu-toggle');
     const nav = document.querySelector('.nav');
     menuToggle?.addEventListener('click', () => nav.classList.toggle('open'));
@@ -1026,6 +1252,176 @@
         heroSlides[heroSlideIndex].classList.add('active');
       }, 4200);
     }
+
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('vis');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .1 });
+
+    document.querySelectorAll('.sr').forEach(el => revealObserver.observe(el));
+
+    const priceCards = document.querySelectorAll('.price-card');
+    priceCards.forEach(card => {
+      card.addEventListener('mousemove', e => {
+        if (window.innerWidth <= 980) return;
+        const rect = card.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        const rx = (0.5 - py) * 8;
+        const ry = (px - 0.5) * 10;
+        const lift = card.classList.contains('popular') ? -10 : 0;
+        card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(${lift - 6}px)`;
+        card.classList.add('tilted');
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.classList.remove('tilted');
+      });
+    });
+
+    const statObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = Number(el.dataset.target || el.textContent || 0);
+        const duration = 1100;
+        const start = performance.now();
+        function tick(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(target * eased);
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        statObserver.unobserve(el);
+      });
+    }, { threshold: .55 });
+
+    document.querySelectorAll('.count-up').forEach(el => statObserver.observe(el));
+
+    const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
+    const lightbox = document.getElementById('galleryLightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const lightboxPrev = document.getElementById('lightboxPrev');
+    const lightboxNext = document.getElementById('lightboxNext');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+    const lightboxDialog = lightbox?.querySelector('.lightbox-dialog');
+    let currentGalleryIndex = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const imagePreloadCache = new Set();
+
+    function getGalleryImageSrc(index) {
+      const item = galleryItems[index];
+      if (!item) return '';
+      const bg = item.style.backgroundImage || '';
+      return bg.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+    }
+
+    function preloadImage(src) {
+      if (!src || imagePreloadCache.has(src)) return;
+      const img = new Image();
+      img.src = src;
+      imagePreloadCache.add(src);
+    }
+
+    function preloadNeighbors(index) {
+      if (!galleryItems.length) return;
+      const nextIndex = (index + 1) % galleryItems.length;
+      const prevIndex = (index - 1 + galleryItems.length) % galleryItems.length;
+      preloadImage(getGalleryImageSrc(nextIndex));
+      preloadImage(getGalleryImageSrc(prevIndex));
+    }
+
+    function renderLightbox(index) {
+      const item = galleryItems[index];
+      if (!item) return;
+      const src = getGalleryImageSrc(index);
+      const title = item.querySelector('span')?.textContent?.trim() || 'תמונה מהגלריה';
+      const tempImg = new Image();
+      lightboxImage.classList.add('is-loading');
+      tempImg.onload = () => {
+        lightboxImage.src = src;
+        lightboxImage.alt = title;
+        lightboxImage.classList.remove('is-loading');
+      };
+      tempImg.src = src;
+      lightboxTitle.textContent = title;
+      currentGalleryIndex = index;
+      if (lightboxCounter) {
+        lightboxCounter.textContent = `${index + 1} / ${galleryItems.length}`;
+      }
+      preloadNeighbors(index);
+    }
+
+    function openLightbox(itemOrIndex) {
+      const index = typeof itemOrIndex === 'number' ? itemOrIndex : galleryItems.indexOf(itemOrIndex);
+      renderLightbox(index < 0 ? 0 : index);
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function stepLightbox(direction) {
+      const nextIndex = (currentGalleryIndex + direction + galleryItems.length) % galleryItems.length;
+      renderLightbox(nextIndex);
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    galleryItems.forEach((item, index) => {
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('role', 'button');
+      item.setAttribute('aria-label', 'פתיחת תמונה מהגלריה');
+      item.addEventListener('click', () => openLightbox(index));
+      item.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openLightbox(index);
+        }
+      });
+    });
+
+    lightboxClose?.addEventListener('click', closeLightbox);
+    lightboxPrev?.addEventListener('click', () => stepLightbox(-1));
+    lightboxNext?.addEventListener('click', () => stepLightbox(1));
+    lightbox?.addEventListener('click', e => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (!lightbox?.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') stepLightbox(1);
+      if (e.key === 'ArrowRight') stepLightbox(-1);
+    });
+
+    lightboxDialog?.addEventListener('touchstart', e => {
+      const touch = e.changedTouches?.[0];
+      if (!touch) return;
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+    }, { passive:true });
+
+    lightboxDialog?.addEventListener('touchend', e => {
+      const touch = e.changedTouches?.[0];
+      if (!touch) return;
+      const dx = touch.clientX - touchStartX;
+      const dy = touch.clientY - touchStartY;
+      if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy)) return;
+      if (dx < 0) stepLightbox(1);
+      if (dx > 0) stepLightbox(-1);
+    }, { passive:true });
 
     const FORM_CONFIG = {
       provider: 'whatsapp', // options: 'whatsapp' | 'formspree' | 'web3forms'
@@ -1116,4 +1512,3 @@
   </script>
 </body>
 </html>
-
