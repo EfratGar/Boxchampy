@@ -1497,7 +1497,8 @@
         } else {
           const text = encodeURIComponent(buildWhatsappText(data));
           window.open(`https://wa.me/${FORM_CONFIG.whatsappNumber}?text=${text}`, '_blank');
-          showFormMessage(`הטופס מוכן. כרגע הוא שולח לוואטסאפ. כדי להפוך אותו לטופס שנשלח ישירות, מחליפים את FORM_CONFIG ל־Formspree או Web3Forms.`);
+          showFormMessage(`הפרטים נשלחו בהצלחה. נחזור אליך בקרוב.`);
+          form.reset();
         }
       } catch (error) {
         showFormMessage('משהו השתבש בשליחה. אפשר לנסות שוב או לפנות אלינו בוואטסאפ.', false);
