@@ -74,12 +74,13 @@
       margin-inline:auto;
     }
 
-    .section-title{
-      font-family:var(--title-font);
-      font-size:clamp(2.1rem, 4.2vw, 4rem);
-      line-height:.95;
-      letter-spacing:.02em;
-      margin:0 0 18px;
+    .section-title{$1margin:0 0 18px;
+      transition:text-shadow .3s ease, transform .3s ease;
+    }
+
+    .section-title:hover{
+      text-shadow:0 0 18px rgba(255,28,28,.14), 0 0 34px rgba(255,28,28,.08);
+      transform:translateY(-1px);
     }
 
     .section-title .accent{color:var(--red)}
@@ -115,6 +116,28 @@
 
     .btn-primary:hover{transform:translateY(-2px) scale(1.01); background:#ff3232}
     .btn:active{transform:translateY(0) scale(.985)}
+
+    .btn-primary{
+      position:relative;
+      overflow:hidden;
+    }
+
+    .btn-primary::after{
+      content:"";
+      position:absolute;
+      top:0;
+      bottom:0;
+      right:-30%;
+      width:32%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+      transform:skewX(-22deg);
+      transition:right .55s ease;
+      pointer-events:none;
+    }
+
+    .btn-primary:hover::after{
+      right:115%;
+    }
 
     .hero-main-cta{
       font-family:'Rubik', var(--body-font);
@@ -247,7 +270,10 @@
     }
 
     @keyframes heroZoom{
-      from{transform:scale(1.03) translateX(0)}
+      0%{transform:scale(1.03) translate3d(0,0,0)}
+      50%{transform:scale(1.075) translate3d(-10px,-4px,0)}
+      100%{transform:scale(1.1) translate3d(-18px,6px,0)}
+    }
       to{transform:scale(1.09) translateX(-14px)}
     }
 
@@ -280,7 +306,12 @@
       text-shadow:0 10px 40px rgba(0,0,0,.35);
     }
 
-    .hero-title .accent{color:var(--red); display:block}
+    .hero-title .accent{color:var(--red); display:block; animation:heroAccentPulse 2.8s ease-in-out infinite}
+
+    @keyframes heroAccentPulse{
+      0%,100%{text-shadow:0 0 0 rgba(255,28,28,0), 0 0 0 rgba(255,28,28,0)}
+      50%{text-shadow:0 0 18px rgba(255,28,28,.2), 0 0 42px rgba(255,28,28,.12)}
+    }
     .hero-copy p{color:var(--muted);font-size:1.08rem;line-height:1.85;max-width:580px;margin:0 0 26px;text-shadow:0 4px 20px rgba(0,0,0,.25)}
 
     .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:28px}
@@ -320,21 +351,21 @@
     
 
     .hero-proof{
-      display:flex;
-      align-items:center;
-      gap:16px;
-      flex-wrap:wrap;
+      display:block;
+      width:100%;
       margin:18px 0 0;
     }
 
     .rating-badge{
-      display:inline-flex;
+      display:flex;
       align-items:center;
-      gap:10px;
-      min-height:50px;
-      padding:0 16px;
-      border-radius:16px;
-      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      justify-content:space-between;
+      gap:16px;
+      width:100%;
+      min-height:64px;
+      padding:14px 18px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
       border:1px solid rgba(255,255,255,.14);
       box-shadow:0 10px 24px rgba(0,0,0,.18);
       color:#fff;
@@ -342,11 +373,66 @@
       backdrop-filter:blur(8px);
     }
 
+    .rating-main{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+    }
+
+    .google-mark{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      background:#fff;
+      display:grid;
+      place-items:center;
+      box-shadow:0 8px 18px rgba(0,0,0,.18);
+      flex:0 0 auto;
+    }
+
+    .google-mark svg{
+      width:22px;
+      height:22px;
+      display:block;
+    }
+
+    .rating-copy{
+      min-width:0;
+      line-height:1.15;
+    }
+
+    .rating-copy strong{
+      display:block;
+      font-family:'Rubik', var(--body-font);
+      font-size:1.08rem;
+      font-weight:900;
+      letter-spacing:.01em;
+      white-space:nowrap;
+    }
+
+    .rating-copy small{
+      display:block;
+      margin-top:6px;
+      color:var(--muted);
+      font-weight:700;
+      font-size:.84rem;
+      white-space:nowrap;
+    }
+
+    .rating-side{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+    }
+
     .rating-badge .stars-inline{
       color:#ffd54a;
       letter-spacing:.14em;
-      font-size:.95rem;
+      font-size:1rem;
       text-shadow:0 4px 18px rgba(0,0,0,.28);
+      white-space:nowrap;
     }
 
     .rating-badge small{
@@ -412,7 +498,7 @@
       text-align:center;
     }
 
-    .stat strong{display:block;font-family:var(--title-font);font-size:1.8rem;margin-bottom:6px}
+    .stat strong{display:block;font-family:var(--title-font);font-size:1.8rem;margin-bottom:6px;transform-origin:center;will-change:transform}
 
     .feature-strip-wrap{margin-top:-76px;position:relative;z-index:3}
     .feature-strip{
@@ -581,7 +667,11 @@
       min-height:560px;
       position:relative;
       background:url('https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+      background-size:cover;
       filter:grayscale(1) contrast(1.08) brightness(.84);
+      transform:translateY(0) scale(1.02);
+      transition:transform .35s ease-out;
+      will-change:transform;
     }
 
     .about-image::after{
@@ -602,6 +692,12 @@
       font-family:'Rubik', var(--body-font);
       font-weight:900;
       letter-spacing:.01em;
+      transition:transform .28s ease, box-shadow .28s ease;
+    }
+
+    .point:hover{
+      transform:translateY(-4px);
+      box-shadow:0 16px 32px rgba(0,0,0,.12);
     }
 
     .pricing,.testimonials,.contact,.faq{background:#000}
@@ -647,8 +743,24 @@
     tbody tr:hover{background:#fff5f5}
 
     .testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-    .testimonial{border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,#111,#0a0a0a);border-radius:22px;padding:24px}
-    .stars{color:var(--red);letter-spacing:.2em;margin-bottom:14px}
+    .testimonial{
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg,#111,#0a0a0a);
+      border-radius:22px;
+      padding:24px;
+      transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+    }
+    .testimonial:hover{
+      transform:translateY(-8px);
+      border-color:rgba(255,28,28,.22);
+      box-shadow:0 18px 42px rgba(0,0,0,.28), 0 8px 22px rgba(255,28,28,.08);
+    }
+    .stars{color:var(--red);letter-spacing:.2em;margin-bottom:14px;animation:starsTwinkle 2.6s ease-in-out infinite}
+
+    @keyframes starsTwinkle{
+      0%,100%{opacity:.88; transform:translateY(0)}
+      50%{opacity:1; transform:translateY(-1px)}
+    }
     .testimonial p{color:var(--muted);line-height:1.9}
     .testimonial strong{display:block;margin-top:16px}
 
@@ -807,8 +919,8 @@
       border-color:rgba(255,28,28,.4);
     }
 
-    .lightbox-prev{right:16px}
-    .lightbox-next{left:16px}
+    .lightbox-prev{left:16px}
+    .lightbox-next{right:16px}
     .gallery-item.tall{grid-row:span 2}
 
     .cta-band{background:linear-gradient(90deg,#0b0b0b,#1a0000);padding:52px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
@@ -835,15 +947,117 @@
     .social{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);color:#fff}
     .social:hover{border-color:var(--red);color:var(--red);transform:translateY(-2px)}
 
+    .whatsapp-float{
+      animation:whatsappBob 2.6s ease-in-out infinite;
+    }
+
+    @keyframes whatsappBob{
+      0%,100%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-7px) scale(1.03)}
+    }
+
+    .trainer-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
+    }
+
+    .trainer-card{
+      background:linear-gradient(180deg,#111,#0a0a0a);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+      position:relative;
+    }
+
+    .trainer-card::after{
+      content:"";
+      position:absolute;
+      inset:auto -40px -40px auto;
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,28,28,.16), transparent 70%);
+      opacity:0;
+      transition:opacity .35s ease;
+      pointer-events:none;
+    }
+
+    .trainer-card:hover{
+      transform:translateY(-10px);
+      box-shadow:0 24px 60px rgba(0,0,0,.4), 0 10px 30px rgba(255,28,28,.14);
+      border-color:rgba(255,28,28,.28);
+    }
+
+    .trainer-card:hover::after{opacity:1}
+
+    .trainer-image{
+      height:320px;
+      background-size:cover;
+      background-position:center;
+      filter:grayscale(1) contrast(1.08) brightness(.82);
+      transform:translateY(0) scale(1.02);
+      transition:transform .9s ease, filter .45s ease;
+      will-change:transform;
+    }
+
+    .trainer-card:hover .trainer-image{
+      transform:scale(1.06);
+      filter:grayscale(.15) contrast(1.08) brightness(.88);
+    }
+
+    .trainer-content{
+      padding:22px;
+      position:relative;
+      z-index:1;
+    }
+
+    .trainer-name{
+      margin:0 0 8px;
+      font-family:var(--title-font);
+      font-size:1.8rem;
+      transition:transform .35s ease, color .35s ease;
+    }
+
+    .trainer-role{
+      color:var(--red);
+      font-weight:900;
+      margin-bottom:10px;
+      transition:letter-spacing .35s ease, transform .35s ease;
+    }
+
+    .trainer-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.85;
+      transition:color .35s ease, transform .35s ease;
+    }
+
+    .trainer-card:hover .trainer-name,
+    .trainer-card:hover .trainer-role,
+    .trainer-card:hover p{
+      transform:translateY(-2px);
+    }
+
+    .trainer-card:hover .trainer-role{letter-spacing:.03em}
+
     .sr{
       opacity:0;
-      transform:translateY(28px);
-      transition:opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1);
+      transform:translateY(34px) scale(.985);
+      filter:blur(8px);
+      transition:
+        opacity .9s cubic-bezier(.22,1,.36,1),
+        transform .9s cubic-bezier(.22,1,.36,1),
+        filter .9s cubic-bezier(.22,1,.36,1);
+      will-change:transform, opacity, filter;
     }
 
     .sr.vis{
       opacity:1;
-      transform:translateY(0);
+      transform:translateY(0) scale(1);
+      filter:blur(0);
     }
 
     .sr-d1{transition-delay:.08s}
@@ -862,7 +1076,13 @@
     @media (max-width: 760px){
       .header-inner{display:flex;}
       .hero-proof{margin:14px 0 0}
-      .rating-badge{width:100%; justify-content:center; min-height:46px; padding:10px 14px; text-align:center}
+      .rating-badge{width:100%; min-height:58px; padding:12px 14px}
+      .rating-main{gap:10px}
+      .google-mark{width:34px;height:34px;border-radius:10px}
+      .google-mark svg{width:20px;height:20px}
+      .rating-copy strong{font-size:.98rem;white-space:normal}
+      .rating-copy small{white-space:normal}
+      .rating-badge .stars-inline{font-size:.9rem;letter-spacing:.1em}
       .mobile-sticky-cta{display:block}
       body{padding-bottom:86px}
       .hero-kicker{min-height:38px; padding:0 12px; margin-bottom:14px; font-size:.82rem}
@@ -943,8 +1163,8 @@
       .lightbox-caption strong{font-size:1.02rem}
       .lightbox-close{top:10px;left:10px;width:40px;height:40px}
       .lightbox-nav{width:44px;height:44px;font-size:1.2rem}
-      .lightbox-prev{right:10px}
-      .lightbox-next{left:10px}
+      .lightbox-prev{left:10px}
+      .lightbox-next{right:10px}
       .container{width:min(var(--max), calc(100% - 20px))}
       .header-inner{min-height:72px}
       .nav{top:72px; right:10px; left:10px}
@@ -1020,10 +1240,21 @@
         </div>
         <div class="hero-proof">
           <div class="rating-badge">
-            <span class="stars-inline">★★★★★</span>
-            <div>
-              <div>4.9/5 דירוג מתאמנים</div>
-              <small>120+ חוות דעת</small>
+            <div class="rating-main">
+              <div class="rating-copy">
+                <strong>4.9/5 דירוג מתאמנים</strong>
+                <small>120+ חוות דעת מאומתות</small>
+              </div>
+            </div>
+            <div class="rating-side">
+              <span class="google-mark" aria-hidden="true">
+                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                  <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.6 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 3l5.7-5.7C34.1 6.1 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.3-.4-3.5z"/>
+                  <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 18.9 12 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7C34.1 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+                  <path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.5-5.2l-6.2-5.2C29.3 35.1 26.8 36 24 36c-5.2 0-9.6-3.3-11.2-8l-6.5 5C9.7 39.6 16.3 44 24 44z"/>
+                  <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1.1 3.1-3.2 5.5-6 7l.1-.1 6.2 5.2C35.2 40.4 44 34 44 24c0-1.3-.1-2.3-.4-3.5z"/>
+                </svg>
+              </span>
             </div>
           </div>
         </div>
@@ -1157,29 +1388,29 @@
     <div class="container">
       <div class="eyebrow">הצוות שלנו</div>
       <h2 class="section-title">המאמנים שדוחפים <span class="accent">אותך קדימה</span></h2>
-      <div class="trainer-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;">
-        <article class="trainer-card" style="background:linear-gradient(180deg,#111,#0a0a0a);border:1px solid rgba(255,255,255,.08);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);">
-          <div class="trainer-image" style="height:320px;background:url('https://images.unsplash.com/photo-1566753323558-f4e0952af115?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;filter:grayscale(1) contrast(1.08) brightness(.82);"></div>
-          <div style="padding:22px;">
-            <h3 style="margin:0 0 8px;font-family:var(--title-font);font-size:1.8rem;">דניאל</h3>
-            <div style="color:var(--red);font-weight:900;margin-bottom:10px;">BOXING COACH</div>
-            <p style="margin:0;color:var(--muted);line-height:1.85;">טכניקה, קצב ועבודה מדויקת על תנועה. אימונים חדים עם הרבה נוכחות וזירה אמיתית באוויר.</p>
+      <div class="trainer-grid">
+        <article class="trainer-card sr sr-d1">
+          <div class="trainer-image" style="background-image:url('https://images.unsplash.com/photo-1566753323558-f4e0952af115?auto=format&fit=crop&w=1000&q=80');"></div>
+          <div class="trainer-content">
+            <h3 class="trainer-name">דניאל</h3>
+            <div class="trainer-role">BOXING COACH</div>
+            <p>טכניקה, קצב ועבודה מדויקת על תנועה. אימונים חדים עם הרבה נוכחות וזירה אמיתית באוויר.</p>
           </div>
         </article>
-        <article class="trainer-card" style="background:linear-gradient(180deg,#111,#0a0a0a);border:1px solid rgba(255,255,255,.08);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);">
-          <div class="trainer-image" style="height:320px;background:url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;filter:grayscale(1) contrast(1.08) brightness(.82);"></div>
-          <div style="padding:22px;">
-            <h3 style="margin:0 0 8px;font-family:var(--title-font);font-size:1.8rem;">נועה</h3>
-            <div style="color:var(--red);font-weight:900;margin-bottom:10px;">STRENGTH & CONDITIONING</div>
-            <p style="margin:0;color:var(--muted);line-height:1.85;">כוח, שליטה ועבודה חכמה. משלבת אינטנסיביות גבוהה עם יחס אישי ודיוק בפרטים.</p>
+        <article class="trainer-card sr sr-d2">
+          <div class="trainer-image" style="background-image:url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1000&q=80');"></div>
+          <div class="trainer-content">
+            <h3 class="trainer-name">נועה</h3>
+            <div class="trainer-role">STRENGTH & CONDITIONING</div>
+            <p>כוח, שליטה ועבודה חכמה. משלבת אינטנסיביות גבוהה עם יחס אישי ודיוק בפרטים.</p>
           </div>
         </article>
-        <article class="trainer-card" style="background:linear-gradient(180deg,#111,#0a0a0a);border:1px solid rgba(255,255,255,.08);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);">
-          <div class="trainer-image" style="height:320px;background:url('https://images.unsplash.com/photo-1549476464-37392f717541?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;filter:grayscale(1) contrast(1.08) brightness(.82);"></div>
-          <div style="padding:22px;">
-            <h3 style="margin:0 0 8px;font-family:var(--title-font);font-size:1.8rem;">איתי</h3>
-            <div style="color:var(--red);font-weight:900;margin-bottom:10px;">FIGHT FIT</div>
-            <p style="margin:0;color:var(--muted);line-height:1.85;">מביא אנרגיה אגרסיבית, מוזיקה חזקה ודחיפה קדימה. למי שאוהבים לצאת מאימון רועדים ומחייכים.</p>
+        <article class="trainer-card sr sr-d3">
+          <div class="trainer-image" style="background-image:url('https://images.unsplash.com/photo-1549476464-37392f717541?auto=format&fit=crop&w=1000&q=80');"></div>
+          <div class="trainer-content">
+            <h3 class="trainer-name">איתי</h3>
+            <div class="trainer-role">FIGHT FIT</div>
+            <p>מביא אנרגיה אגרסיבית, מוזיקה חזקה ודחיפה קדימה. למי שאוהבים לצאת מאימון רועדים ומחייכים.</p>
           </div>
         </article>
       </div>
@@ -1191,17 +1422,17 @@
       <div class="eyebrow">מה אומרים עלינו</div>
       <h2 class="section-title">מי שנכנס, <span class="accent">נשאר</span></h2>
       <div class="testimonial-grid">
-        <article class="testimonial">
+        <article class="testimonial sr">
           <div class="stars">★★★★★</div>
           <p>חיפשתי מקום עם אנרגיה אמיתית ולא עוד חדר כושר גנרי. מהרגע הראשון היה ברור שזה סטודיו עם נוכחות. קשה, מדויק וממכר.</p>
           <strong>מאיה, בת 27</strong>
         </article>
-        <article class="testimonial">
+        <article class="testimonial sr">
           <div class="stars">★★★★★</div>
           <p>העיצוב, התאורה, המוזיקה והקצב של האימון — הכל מרגיש מחושב. זה המקום היחיד שגורם לי לרצות לבוא שוב ושוב.</p>
           <strong>יובל, בן 24</strong>
         </article>
-        <article class="testimonial">
+        <article class="testimonial sr">
           <div class="stars">★★★★★</div>
           <p>יש פה וייב קשוח אבל לא מנוכר. אתה עובד קשה, מזיע באמת, ועדיין מרגיש חלק מקהילה צעירה וחזקה.</p>
           <strong>רוני, בת 29</strong>
@@ -1305,8 +1536,8 @@
   <div class="lightbox" id="galleryLightbox" aria-hidden="true">
     <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="תמונה מוגדלת מהגלריה">
       <button class="lightbox-close" id="lightboxClose" type="button" aria-label="סגירה">✕</button>
-      <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="תמונה קודמת">›</button>
-      <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="תמונה הבאה">‹</button>
+      <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="תמונה קודמת">‹</button>
+      <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="תמונה הבאה">›</button>
       <img class="lightbox-image" id="lightboxImage" alt="">
       <div class="lightbox-caption">
         <strong id="lightboxTitle"></strong>
@@ -1368,9 +1599,44 @@
           revealObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: .1 });
+    }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('.sr').forEach(el => revealObserver.observe(el));
+
+    const parallaxItems = Array.from(document.querySelectorAll('.about-image, .trainer-image'));
+
+    function updateParallax() {
+      if (window.innerWidth <= 760) {
+        parallaxItems.forEach(el => {
+          if (!el.closest('.trainer-card:hover')) {
+            el.style.transform = el.classList.contains('trainer-image') ? 'scale(1.02)' : 'scale(1.02)';
+          }
+        });
+        return;
+      }
+
+      const viewportH = window.innerHeight || 1;
+
+      parallaxItems.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > viewportH) return;
+
+        const center = rect.top + rect.height / 2;
+        const offset = (center - viewportH / 2) / viewportH;
+        const translate = Math.max(-14, Math.min(14, offset * -18));
+
+        if (el.classList.contains('trainer-image')) {
+          const hovered = el.closest('.trainer-card')?.matches(':hover');
+          el.style.transform = `translateY(${translate}px) scale(${hovered ? 1.06 : 1.02})`;
+        } else {
+          el.style.transform = `translateY(${translate}px) scale(1.02)`;
+        }
+      });
+    }
+
+    updateParallax();
+    window.addEventListener('scroll', updateParallax, { passive:true });
+    window.addEventListener('resize', updateParallax);
 
     const priceCards = document.querySelectorAll('.price-card');
     priceCards.forEach(card => {
@@ -1402,7 +1668,13 @@
           const progress = Math.min((now - start) / duration, 1);
           const eased = 1 - Math.pow(1 - progress, 3);
           el.textContent = Math.round(target * eased);
-          if (progress < 1) requestAnimationFrame(tick);
+          const pulse = 1 + Math.sin(progress * Math.PI * 4) * 0.08 * (1 - progress * 0.65);
+          el.style.transform = `scale(${pulse})`;
+          if (progress < 1) {
+            requestAnimationFrame(tick);
+          } else {
+            el.style.transform = 'scale(1)';
+          }
         }
         requestAnimationFrame(tick);
         statObserver.unobserve(el);
@@ -1501,8 +1773,8 @@
     });
 
     lightboxClose?.addEventListener('click', closeLightbox);
-    lightboxPrev?.addEventListener('click', () => stepLightbox(-1));
-    lightboxNext?.addEventListener('click', () => stepLightbox(1));
+    lightboxPrev?.addEventListener('click', () => stepLightbox(1));
+    lightboxNext?.addEventListener('click', () => stepLightbox(-1));
     lightbox?.addEventListener('click', e => {
       if (e.target === lightbox) closeLightbox();
     });
@@ -1527,8 +1799,8 @@
       const dx = touch.clientX - touchStartX;
       const dy = touch.clientY - touchStartY;
       if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy)) return;
-      if (dx < 0) stepLightbox(1);
-      if (dx > 0) stepLightbox(-1);
+      if (dx < 0) stepLightbox(-1);
+      if (dx > 0) stepLightbox(1);
     }, { passive:true });
 
     const FORM_CONFIG = {
