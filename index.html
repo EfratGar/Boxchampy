@@ -74,7 +74,12 @@
       margin-inline:auto;
     }
 
-    .section-title{$1margin:0 0 18px;
+    .section-title{
+      font-family:var(--title-font);
+      font-size:clamp(2.1rem, 4.2vw, 4rem);
+      line-height:.95;
+      letter-spacing:.02em;
+      margin:0 0 18px;
       transition:text-shadow .3s ease, transform .3s ease;
     }
 
@@ -177,10 +182,9 @@
 
     .header-inner{
       min-height:92px;
-      display:grid;
-      grid-template-columns:auto 1fr auto;
+      display:flex;
       align-items:center;
-      gap:20px;
+      gap:24px;
     }
 
     .brand{
@@ -204,15 +208,15 @@
     .nav{
       display:flex;
       align-items:center;
-      justify-content:center;
-      gap:22px;
-      flex-wrap:wrap;
-      justify-self:center;
+      justify-content:flex-start;
+      gap:26px;
+      flex-wrap:nowrap;
+      margin-inline-start:auto;
     }
 
     .nav a{color:#fff;opacity:.94;font-weight:700;font-size:.98rem}
     .nav a:hover{color:var(--red)}
-    .nav .cta{margin-inline-start:10px}
+    .nav .cta{margin-inline-start:18px}
 
     .menu-toggle{display:none;background:none;border:0;color:#fff;font-size:1.7rem;cursor:pointer}
 
@@ -273,8 +277,6 @@
       0%{transform:scale(1.03) translate3d(0,0,0)}
       50%{transform:scale(1.075) translate3d(-10px,-4px,0)}
       100%{transform:scale(1.1) translate3d(-18px,6px,0)}
-    }
-      to{transform:scale(1.09) translateX(-14px)}
     }
 
     .hero::after{
@@ -739,7 +741,7 @@
     .schedule-box{background:#fff;border-radius:28px;overflow:hidden;box-shadow:var(--shadow)}
     table{width:100%;border-collapse:collapse}
     th,td{padding:18px 20px;text-align:right;border-bottom:1px solid rgba(0,0,0,.08)}
-    thead th{background:#111;color:#fff;font-weight:900}
+    thead th{background:#111;color:#fff;font-weight:900;font-family:'Rubik', var(--body-font);letter-spacing:.01em}
     tbody tr:hover{background:#fff5f5}
 
     .testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -944,8 +946,44 @@
     .site-footer{background:#050505;border-top:1px solid rgba(255,255,255,.06);padding:34px 0}
     .footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap;color:#bdbdbd}
     .socials{display:flex;gap:12px}
-    .social{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);color:#fff}
-    .social:hover{border-color:var(--red);color:var(--red);transform:translateY(-2px)}
+    .social{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,255,255,.12);
+      color:#fff;
+      background:rgba(255,255,255,.02);
+      transition:transform .22s ease, border-color .22s ease, color .22s ease, box-shadow .22s ease, background .22s ease;
+    }
+    .social .material-symbols-rounded{
+      font-family:'Material Symbols Rounded';
+      font-size:20px;
+      line-height:1;
+      font-weight:normal;
+      font-style:normal;
+      display:block;
+      letter-spacing:normal;
+      text-transform:none;
+      white-space:nowrap;
+      direction:ltr;
+      -webkit-font-smoothing:antialiased;
+      font-variation-settings:'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    .social svg{
+      width:20px;
+      height:20px;
+      display:block;
+      fill:currentColor;
+    }
+    .social:hover{
+      border-color:var(--red);
+      color:var(--red);
+      background:rgba(255,28,28,.06);
+      box-shadow:0 10px 24px rgba(255,28,28,.14);
+      transform:translateY(-2px);
+    }
 
     .whatsapp-float{
       animation:whatsappBob 2.6s ease-in-out infinite;
@@ -1074,7 +1112,13 @@
     }
 
     @media (max-width: 760px){
-      .header-inner{display:flex;}
+      .header-inner{
+        display:grid;
+        grid-template-columns:auto 1fr auto;
+        align-items:center;
+        min-height:78px;
+        gap:12px;
+      }
       .hero-proof{margin:14px 0 0}
       .rating-badge{width:100%; min-height:58px; padding:12px 14px}
       .rating-main{gap:10px}
@@ -1087,9 +1131,19 @@
       body{padding-bottom:86px}
       .hero-kicker{min-height:38px; padding:0 12px; margin-bottom:14px; font-size:.82rem}
       .hero-slide{background-position:62% center;}
-      .menu-toggle{display:block}
+      .menu-toggle{
+        display:block;
+        grid-column:1;
+        justify-self:start;
+        margin:0;
+      }
       .site-header{background:rgba(4,4,4,.94)}
-      .header-inner{min-height:78px; gap:12px}
+      .brand{
+        grid-column:3;
+        justify-self:end;
+        margin:0;
+        order:initial;
+      }
       .nav{
         position:absolute;
         top:78px;
@@ -1166,7 +1220,9 @@
       .lightbox-prev{left:10px}
       .lightbox-next{right:10px}
       .container{width:min(var(--max), calc(100% - 20px))}
-      .header-inner{min-height:72px}
+      .header-inner{min-height:72px; grid-template-columns:auto 1fr auto;}
+      .menu-toggle{grid-column:1; justify-self:start;}
+      .brand{grid-column:3; justify-self:end;}
       .nav{top:72px; right:10px; left:10px}
       .hero-grid{padding:22px 0 100px}
       .hero-title{font-size:2rem}
@@ -1398,7 +1454,7 @@
           </div>
         </article>
         <article class="trainer-card sr sr-d2">
-          <div class="trainer-image" style="background-image:url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1000&q=80');"></div>
+          <div class="trainer-image" style="background-image:url('https://images.unsplash.com/photo-1549570652-97324981a6fd?auto=format&fit=crop&w=1000&q=80');"></div>
           <div class="trainer-content">
             <h3 class="trainer-name">נועה</h3>
             <div class="trainer-role">STRENGTH & CONDITIONING</div>
@@ -1524,7 +1580,7 @@
     </div>
   </section>
 
-  <a href="https://wa.me/972501234567?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A2%D7%9C%20%D7%9E%D7%A0%D7%95%D7%99%20%D7%91-BOXCHAMPY" class="whatsapp-float" aria-label="שליחת הודעה בוואטסאפ" style="position:fixed;left:18px;bottom:18px;width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,#25d366,#128c7e);color:#fff;font-size:1.6rem;font-weight:900;box-shadow:0 18px 40px rgba(0,0,0,.35);z-index:80;border:2px solid rgba(255,255,255,.18);">✆</a>
+  <a href="https://wa.me/972501234567?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A2%D7%9C%20%D7%9E%D7%A0%D7%95%D7%99%20%D7%91-BOXCHAMPY" class="whatsapp-float" aria-label="שליחת הודעה בוואטסאפ" style="position:fixed;left:18px;bottom:18px;width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,#25d366,#128c7e);color:#fff;box-shadow:0 18px 40px rgba(0,0,0,.35);z-index:80;border:2px solid rgba(255,255,255,.18);"><span class="material-symbols-rounded" style="font-size:30px;line-height:1;font-variation-settings:'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;">chat</span></a>
 
   <div class="mobile-sticky-cta" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:95;padding:10px 12px 10px;background:linear-gradient(180deg, rgba(5,5,5,0), rgba(5,5,5,.88) 28%, rgba(5,5,5,.98));backdrop-filter:blur(10px);" aria-label="כפתורי פעולה מהירים במובייל">
     <div class="inner" style="display:flex;gap:10px;align-items:center;">
@@ -1553,9 +1609,17 @@
     <div class="container footer-inner">
       <div>© 2026 BOXCHAMPY • כל הזכויות שמורות</div>
       <div class="socials">
-        <a class="social" href="#" aria-label="Instagram">◎</a>
-        <a class="social" href="#" aria-label="TikTok">♪</a>
-        <a class="social" href="#" aria-label="Facebook">f</a>
+        <a class="social" href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2.2A2.8 2.8 0 0 0 4.2 7v10A2.8 2.8 0 0 0 7 19.8h10a2.8 2.8 0 0 0 2.8-2.8V7A2.8 2.8 0 0 0 17 4.2H7zm10.55 1.65a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2.2A2.8 2.8 0 1 0 12 14.8 2.8 2.8 0 0 0 12 9.2z"/>
+          </svg>
+        </a>
+        <a class="social" href="#" aria-label="TikTok"><span class="material-symbols-rounded">music_note</span></a>
+        <a class="social" href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M13.5 22v-8.2h2.8l.42-3.27H13.5V8.43c0-.95.27-1.6 1.63-1.6h1.74V3.9c-.3-.04-1.33-.13-2.53-.13-2.5 0-4.22 1.52-4.22 4.33v2.41H7.3v3.27h2.83V22h3.37z"/>
+          </svg>
+        </a>
       </div>
     </div>
   </footer>
